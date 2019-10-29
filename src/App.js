@@ -1,13 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Provider } from 'react-redux';
 
+import AppContainer from './navigation';
 import store from './store';
+import navigationService from './services/navigation';
 
 export default function App() {
   return (
     <Provider store={store}>
-      <View>Tickevent</View>
+      <AppContainer
+        ref={navigator => navigationService.setNavigator(navigator)}
+      />
     </Provider>
   );
 }

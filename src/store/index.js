@@ -11,7 +11,7 @@ import rootSaga from './sagas';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth'],
+  blacklist: ['auth'],
 };
 
 // Middlewares
@@ -24,8 +24,10 @@ middlewares.push(sagaMiddleware);
 
 // Store with redux-persist
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store = createStore(persistedReducer, applyMiddleware(...middlewares));
-const persistor = persistStore(store);
+export const store = createStore(
+  persistedReducer,
+  applyMiddleware(...middlewares)
+);
+export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
-export default { store, persistor };

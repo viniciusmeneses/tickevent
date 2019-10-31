@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { login } from '../../store/ducks/auth';
 
 import Input from '../../components/Input';
 import SubmitButton from '../../components/SubmitButton';
@@ -13,7 +17,7 @@ import {
   LogoContainer,
 } from './styles';
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     email: '',
     password: '',
@@ -24,8 +28,18 @@ export default class Login extends Component {
     navigation.navigate('Register');
   };
 
+  handleLogin = () => {
+    const { email, password } = this.state;
+    const { login } = this.props;
+
+    if (email && password) {
+      login(email, password);
+    }
+  };
+
   render() {
     const { email, password } = this.state;
+    const { isLogging } = this.props;
 
     return (
       <ScrollContainer>
@@ -54,7 +68,11 @@ export default class Login extends Component {
               autoCompleteType="password"
             />
 
-            <SubmitButton text="Acessar" />
+            <SubmitButton
+              text="Acessar"
+              onPress={this.handleLogin}
+              loading={isLogging}
+            />
           </FormContainer>
 
           <RegisterPageButton onPress={this.navigateToRegister}>
@@ -67,3 +85,14 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isLogging: state.auth.isLogging,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({ login }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

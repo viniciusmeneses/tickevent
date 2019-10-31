@@ -3,13 +3,18 @@ import { createStackNavigator } from 'react-navigation-stack';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 
-const AuthNavigator = createStackNavigator({
-  Login: {
-    screen: LoginPage,
+const AuthNavigator = createStackNavigator(
+  {
+    Login: {
+      screen: LoginPage,
+    },
+    Register: {
+      screen: RegisterPage,
+    },
   },
-  Register: {
-    screen: RegisterPage,
-  },
-});
+  {
+    headerMode: 'none',
+  }
+);
 
 export default AuthNavigator;

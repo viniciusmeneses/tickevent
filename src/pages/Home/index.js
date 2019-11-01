@@ -1,10 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-// import { Container } from './styles';
+import TabBarLabel from '../../components/TabBarLabel';
 
 export default function Home() {
-  return (
-    <View />
-  );
+  return <View />;
 }
+
+Home.navigationOptions = {
+  tabBarLabel: props => <TabBarLabel {...props}>Home</TabBarLabel>,
+};

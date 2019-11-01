@@ -10,11 +10,10 @@ const AppNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      tabStyle: {
-        justifyContent: 'center',
-      },
-      labelStyle: {
-        fontSize: 18,
+      activeTintColor: '#ff5757',
+      inactiveTintColor: '#c7c7c7',
+      style: {
+        borderTopColor: '#dfdfdf',
       },
       showIcon: false,
     },

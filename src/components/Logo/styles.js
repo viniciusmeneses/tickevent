@@ -8,6 +8,6 @@ export const Title = styled.Text`
   font-family: Roboto;
   font-weight: bold;
   font-size: 32px;
-  color: #333;
+  color: ${props => props.color || '#333'};
   margin-top: 5px;
 `;

@@ -1,10 +1,37 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-// import { Container } from './styles';
+import { loadUserData } from '../../store/ducks/auth';
 
-export default function AuthSplash() {
-  return (
-    <View />
-  );
+import Logo from '../../components/Logo';
+import { Container } from './styles';
+
+class AuthSplash extends Component {
+  componentDidMount() {
+    const { userToken, loadUserData } = this.props;
+    if (userToken) {
+      loadUserData(userToken);
+    }
+  }
+
+  render() {
+    return (
+      <Container>
+        <Logo color="#fff" />
+      </Container>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  userToken: state.auth.token,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ loadUserData }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthSplash);

@@ -23,6 +23,13 @@ class Login extends Component {
     password: '',
   };
 
+  loginInputProps = {
+    autoCapitalize: 'none',
+    autoCorrect: false,
+    returnKeyType: 'send',
+    onSubmitEditing: this.handleLogin,
+  };
+
   navigateToRegister = () => {
     const { navigation } = this.props;
     navigation.navigate('Register');
@@ -53,19 +60,17 @@ class Login extends Component {
               placeholder="E-mail"
               onChangeText={text => this.setState({ email: text })}
               value={email}
-              autoCapitalize="none"
-              autoCorrect={false}
               keyboardType="email-address"
               autoCompleteType="email"
+              {...this.loginInputProps}
             />
             <Input
               placeholder="Senha"
               onChangeText={text => this.setState({ password: text })}
               value={password}
               secureTextEntry
-              autoCapitalize="none"
-              autoCorrect={false}
               autoCompleteType="password"
+              {...this.loginInputProps}
             />
 
             <SubmitButton

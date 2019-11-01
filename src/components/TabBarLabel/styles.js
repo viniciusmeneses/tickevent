@@ -8,8 +8,8 @@ export const Container = styled.View`
 
 export const Label = styled.Text`
   font-size: 17;
-  color: ${props => props.color};
+  color: ${({ color }) => color};
   text-transform: uppercase;
-  font-weight: ${props => (props.active ? '700' : '300')};
+  font-weight: ${({ active }) => (active ? '700' : '300')};
   font-family: 'Roboto';
 `;

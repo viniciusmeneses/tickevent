@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { register } from '../../store/ducks/auth';
 
 import Input from '../../components/Input';
 import SubmitButton from '../../components/SubmitButton';
@@ -8,7 +12,7 @@ import ScrollContainer from '../../components/ScrollContainer';
 
 import { Container, FormContainer, BackButton } from './styles';
 
-export default class Register extends Component {
+class Register extends Component {
   state = {
     email: '',
     password: '',
@@ -16,9 +20,23 @@ export default class Register extends Component {
     cpf: '',
   };
 
+  registerInputProps = {
+    onSubmitEditing: this.handleRegister,
+    returnKeyType: 'send',
+  };
+
   navigateToBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
+  };
+
+  handleRegister = () => {
+    const { name, cpf, email, password } = this.state;
+    const { register } = this.props;
+
+    if (name && cpf.length === 11 && email && password) {
+      register(name, cpf, email, password);
+    }
   };
 
   render() {
@@ -36,6 +54,7 @@ export default class Register extends Component {
               placeholder="Nome completo"
               onChangeText={text => this.setState({ name: text })}
               value={name}
+              {...this.registerInputProps}
             />
 
             <Input
@@ -46,6 +65,7 @@ export default class Register extends Component {
               }
               value={cpf}
               keyboardType="numeric"
+              {...this.registerInputProps}
             />
 
             <Input
@@ -56,6 +76,7 @@ export default class Register extends Component {
               autoCorrect={false}
               keyboardType="email-address"
               autoCompleteType="email"
+              {...this.registerInputProps}
             />
             <Input
               placeholder="Senha"
@@ -65,12 +86,25 @@ export default class Register extends Component {
               autoCapitalize="none"
               autoCorrect={false}
               autoCompleteType="password"
+              {...this.registerInputProps}
             />
 
-            <SubmitButton text="Cadastrar" />
+            <SubmitButton text="Cadastrar" onPress={this.handleRegister} />
           </FormContainer>
         </Container>
       </ScrollContainer>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isRegistering: state.auth.isRegistering,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ register }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);

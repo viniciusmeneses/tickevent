@@ -10,9 +10,7 @@ import { Container } from './styles';
 class AuthSplash extends Component {
   componentDidMount() {
     const { userToken, loadUserData } = this.props;
-    if (userToken) {
-      loadUserData(userToken);
-    }
+    loadUserData(userToken);
   }
 
   render() {

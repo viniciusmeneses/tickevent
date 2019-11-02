@@ -46,14 +46,19 @@ function* registerSaga({ payload }) {
 
 function* loadUserDataSaga({ payload }) {
   try {
-    const { sub: userId } = jwtDecode(payload.token);
-    const { data } = yield call(
-      apiService.get,
-      `/users/${userId}`,
-      configWithAuth(payload.token)
-    );
-    yield put(loadUserDataSuccess(data));
-    navigationService.navigate('Home');
+    const token = payload.token;
+    if (token) {
+      const { sub: userId } = jwtDecode(token);
+      const { data } = yield call(
+        apiService.get,
+        `/users/${userId}`,
+        configWithAuth(token)
+      );
+      yield put(loadUserDataSuccess(data));
+      navigationService.navigate('Home');
+    } else {
+      navigationService.navigate('Login');
+    }
   } catch (e) {
     if (e.response.status === 404) {
       toastService.show('Usuário não encontrada');

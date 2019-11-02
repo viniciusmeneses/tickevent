@@ -1,6 +1,5 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
-import Toast from 'react-native-root-toast';
 
 import {
   Types,
@@ -9,8 +8,10 @@ import {
   loadUserData,
   loadUserDataSuccess,
 } from '../../store/ducks/auth';
+
 import apiService, { configWithAuth } from '../../services/api';
 import navigationService from '../../services/navigation';
+import toastService from '../../services/toast';
 
 function* loginSaga({ payload }) {
   try {
@@ -18,7 +19,7 @@ function* loginSaga({ payload }) {
     const token = data.accessToken;
     yield all([put(authSuccess(token)), put(loadUserData(token))]);
   } catch (e) {
-    Toast.show('E-mail ou senha inválidos');
+    toastService.show('E-mail ou senha inválidos');
     yield put(authError());
   }
 }
@@ -30,15 +31,15 @@ function* registerSaga({ payload }) {
     yield all([put(authSuccess(token)), put(loadUserData(token))]);
   } catch (e) {
     const errorMessage = e.response.data;
+    let toastMessage = 'Ocorreu um erro ao realizar o cadastro';
     if (errorMessage === 'Email format is invalid') {
-      Toast.show('E-mail inválido');
+      toastMessage = 'E-mail inválido';
     } else if (errorMessage === 'Email already exists') {
-      Toast.show('Já existe um usuário cadastrado com o e-mail informado');
+      toastMessage = 'Já existe um usuário cadastrado com o e-mail informado';
     } else if (errorMessage === 'Password is too short') {
-      Toast.show('Senha inválida');
-    } else {
-      Toast.show('Ocorreu um erro ao realizar o cadastro');
+      toastMessage = 'Senha inválida';
     }
+    toastService.show(toastMessage);
     yield put(authError());
   }
 }
@@ -55,7 +56,7 @@ function* loadUserDataSaga({ payload }) {
     navigationService.navigate('Home');
   } catch (e) {
     if (e.response.status === 404) {
-      Toast.show('Usuário não encontrada');
+      toastService.show('Usuário não encontrada');
     }
     navigationService.navigate('Login');
   }

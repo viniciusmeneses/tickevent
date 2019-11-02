@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  width: 210px;
-  margin-right: 10px;
+  border-radius: 6px;
+  height: 120px;
+  margin-bottom: 10px;
 `;
 
 export const BackgroundImage = styled.ImageBackground.attrs({
@@ -21,19 +22,25 @@ export const TextContainer = styled.View`
   padding: 10px;
 `;
 
+export const EventNameContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: auto;
+`;
+
 export const EventName = styled.Text`
   font-family: 'Roboto';
   font-weight: bold;
-  font-size: 18px;
+  font-size: 22px;
   color: #fff;
-  margin-bottom: auto;
+  margin-left: 10px;
 `;
 
 export const EventDetails = styled.Text`
   font-family: 'Roboto';
   font-weight: 300;
-  font-size: 12px;
+  font-size: 13px;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 1.8px;
+  letter-spacing: 2px;
 `;

@@ -49,7 +49,7 @@ function Card({
                 </EventDetails>
               </EventDetailsIconContainer>
             </EventDetailsContainer>
-            <EventTicketPrice>R$ 56,99</EventTicketPrice>
+            <EventTicketPrice>{ticketPrice}</EventTicketPrice>
           </EventContainer>
         </TextContainer>
       </TouchableOpacity>

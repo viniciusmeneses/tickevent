@@ -61,6 +61,7 @@ class Home extends Component {
               startTime: '15:30',
               city: 'Campinas',
               state: 'SP',
+              ticketPrice: 'R$ 59,99',
             }}
           />
         )}

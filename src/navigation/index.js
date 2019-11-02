@@ -7,15 +7,9 @@ import AppNavigator from './app';
 
 const RootNavigator = createAnimatedSwitchNavigator(
   {
-    Splash: {
-      screen: AuthSplashPage,
-    },
-    Auth: {
-      screen: AuthNavigator,
-    },
-    App: {
-      screen: AppNavigator,
-    },
+    Splash: AuthSplashPage,
+    Auth: AuthNavigator,
+    App: AppNavigator,
   },
   {}
 );

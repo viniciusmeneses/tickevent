@@ -1,23 +1,32 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 
-import HomePage from '../pages/Home';
+import StackLabel from '../components/StackLabel';
+import SearchPage from '../pages/Search';
 
-const AppNavigator = createBottomTabNavigator(
+import TabsNavigator from './tabs';
+
+const stackOptions = screenName => ({
+  title: screenName,
+  headerTintColor: '#fff',
+  headerTitle: StackLabel,
+  headerStyle: {
+    backgroundColor: '#FF5757',
+  },
+});
+
+const AppNavigator = createStackNavigator(
   {
-    Home: {
-      screen: HomePage,
+    App: {
+      screen: TabsNavigator,
+    },
+    Search: {
+      screen: SearchPage,
+      navigationOptions: stackOptions('Buscar Eventos'),
     },
   },
   {
-    tabBarOptions: {
-      activeTintColor: '#ff5757',
-      inactiveTintColor: '#A1A1A1',
-      style: {
-        borderTopColor: '#dfdfdf',
-        borderTopWidth: 1.5,
-      },
-      showIcon: false,
-    },
+    headerBackTitleVisible: false,
+    headerLayoutPreset: 'center',
   }
 );
 

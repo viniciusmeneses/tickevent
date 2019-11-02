@@ -5,12 +5,8 @@ import RegisterPage from '../pages/Register';
 
 const AuthNavigator = createStackNavigator(
   {
-    Login: {
-      screen: LoginPage,
-    },
-    Register: {
-      screen: RegisterPage,
-    },
+    Login: LoginPage,
+    Register: RegisterPage,
   },
   {
     headerMode: 'none',

@@ -7,9 +7,10 @@ export const Container = styled.View`
 `;
 
 export const Label = styled.Text`
-  font-size: 17px;
-  color: ${({ color }) => color};
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: #fff;
   text-transform: uppercase;
-  font-weight: ${({ active }) => (active ? 'bold' : '300')};
-  font-family: ${({ active }) => (active ? 'Roboto' : 'sans-serif-light')};
+  font-weight: bold;
+  font-family: 'Roboto';
 `;

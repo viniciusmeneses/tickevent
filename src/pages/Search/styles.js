@@ -4,7 +4,7 @@ import { Dimensions } from 'react-native';
 import SearchDraw from '../../assets/searchDraw.png';
 
 export const Container = styled.View`
-  padding: 15px 15px 0 15px;
+  padding: 15px 0 0 0;
   flex: 1;
   background-color: #fbfbfb;
 `;
@@ -13,6 +13,7 @@ export const SearchContainer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
+  margin: 0 15px 0 15px;
 `;
 
 export const SearchButton = styled.TouchableOpacity`
@@ -37,4 +38,18 @@ export const SearchImage = styled.Image.attrs({
 })`
   height: ${Dimensions.get('window').width / 1.5};
   width: ${Dimensions.get('window').width / 1.5};
+`;
+
+export const EventListHeaderContainer = styled.View`
+  flex: 1;
+  background-color: #fbfbfb;
+  padding: 0 15px 0 15px;
+`;
+
+export const EventList = styled.FlatList.attrs({
+  ListHeaderComponentStyle: {
+    paddingBottom: 7,
+  },
+})`
+  background-color: #fbfbfb;
 `;

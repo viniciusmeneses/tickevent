@@ -3,19 +3,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
 
 import Logo from '../../components/Logo';
-import TabBarLabel from '../../components/TabBarLabel';
 import FeaturedCard from '../../components/FeaturedCard';
 import Card from '../../components/Card';
-import {
-  Container,
-  HeaderContainer,
-  Separator,
-  ListTitle,
-  FeaturedList,
-  EventList,
-} from './styles';
+import Separator from '../../components/Separator';
+import ListTitle from '../../components/ListTitle';
+import { Container, HeaderContainer, FeaturedList, EventList } from './styles';
 
 class Home extends Component {
+  navigateToSearch = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Search');
+  };
+
   render() {
     return (
       <EventList
@@ -25,11 +24,11 @@ class Home extends Component {
           <Container>
             <HeaderContainer>
               <Logo horizontal={true} />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={this.navigateToSearch}>
                 <Icon name="search" color="#ff5757" size={30} />
               </TouchableOpacity>
             </HeaderContainer>
-            <Separator header={true} />
+            <Separator marginRight={true} />
             <ListTitle>Destaques</ListTitle>
             <FeaturedList
               data={[1, 2]}
@@ -48,7 +47,7 @@ class Home extends Component {
                 />
               )}
             />
-            <Separator />
+            <Separator marginRight={true} />
             <ListTitle>Próximos Eventos</ListTitle>
           </Container>
         }
@@ -69,9 +68,5 @@ class Home extends Component {
     );
   }
 }
-
-Home.navigationOptions = {
-  tabBarLabel: props => <TabBarLabel {...props}>Home</TabBarLabel>,
-};
 
 export default Home;

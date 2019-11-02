@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components/native';
 import TextInputMask from 'react-native-text-input-mask';
 
-const inputStyle = css`
+export const inputStyle = ({ fullWidth }) => css`
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
   color: #333;
   flex-direction: row;
-  width: 250px;
+  width: ${fullWidth ? '100%' : '250px'};
   padding: 10px 20px;
   margin-bottom: 10px;
   font-size: 15px;
@@ -15,13 +15,13 @@ const inputStyle = css`
 `;
 
 const inputAttrs = {
-  placeholderTextColor: '#929292',
+  placeholderTextColor: '#ccc',
 };
 
 export const TextInput = styled.TextInput.attrs(inputAttrs)`
-  ${inputStyle}
+  ${props => inputStyle(props)}
 `;
 
 export const MaskedTextInput = styled(TextInputMask).attrs(inputAttrs)`
-  ${inputStyle}
+  ${props => inputStyle(props)}
 `;

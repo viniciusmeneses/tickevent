@@ -1,7 +1,22 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
+
+const horizontalContainerStyle = css`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const LogoContainer = styled.View`
+  ${({ horizontal }) => horizontal && horizontalContainerStyle}
   align-items: center;
+`;
+
+const horizontalTitleStyle = css`
+  margin-left: 8px;
+`;
+
+const verticalTitleStyle = css`
+  margin-top: 5px;
 `;
 
 export const Title = styled.Text`
@@ -9,5 +24,6 @@ export const Title = styled.Text`
   font-weight: bold;
   font-size: 32px;
   color: ${({ color }) => color || '#333'};
-  margin-top: 5px;
+  ${({ horizontal }) =>
+    horizontal ? horizontalTitleStyle : verticalTitleStyle}
 `;

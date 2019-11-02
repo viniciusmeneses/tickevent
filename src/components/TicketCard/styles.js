@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   border-radius: 6px;
   height: 120px;
-  margin-bottom: 10px;
+  margin: 0 15px 10px 15px;
 `;
 
 export const BackgroundImage = styled.ImageBackground.attrs({

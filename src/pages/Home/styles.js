@@ -11,7 +11,6 @@ export const HeaderContainer = styled.View`
   justify-content: space-between;
   align-items: center;
   padding-right: 20px;
-  background-color: #fbfbfb;
   padding: 15px 20px 0 0;
 `;
 
@@ -25,10 +24,6 @@ export const FeaturedList = styled.FlatList.attrs({
   max-height: 170px;
 `;
 
-export const EventList = styled.FlatList.attrs({
-  ListHeaderComponentStyle: {
-    paddingBottom: 7,
-  },
-})`
+export const EventList = styled.FlatList`
   background-color: #fbfbfb;
 `;

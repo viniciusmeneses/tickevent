@@ -9,8 +9,12 @@ import { Container } from './styles';
 
 class AuthSplash extends Component {
   componentDidMount() {
-    const { userToken, loadUserData } = this.props;
-    loadUserData(userToken);
+    const { userToken, loadUserData, navigation } = this.props;
+    if (userToken) {
+      loadUserData(userToken);
+    } else {
+      navigation.navigate('Login');
+    }
   }
 
   render() {

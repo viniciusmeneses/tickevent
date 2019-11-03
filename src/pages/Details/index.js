@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { clearDetails, fetchOrganizer } from '../../store/ducks/detail';
 import { addToFavorite, removeFavorite } from '../../store/ducks/favorite';
+import { buyTicket } from '../../store/ducks/ticket';
 
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import IconFa5 from 'react-native-vector-icons/FontAwesome5';
@@ -67,6 +68,11 @@ class Details extends Component {
     } else {
       addToFavorite(event);
     }
+  };
+
+  buyEventTicket = () => {
+    const { buyTicket, event } = this.props;
+    buyTicket(event);
   };
 
   render() {
@@ -132,7 +138,7 @@ class Details extends Component {
                 {event.ticketPriceFormatted}
               </TicketPrice>
             </EventDetailContainer>
-            <BuyTicketButton>
+            <BuyTicketButton onPress={this.buyEventTicket}>
               <BuyTicketButtonText>Comprar Ingresso</BuyTicketButtonText>
             </BuyTicketButton>
           </TicketPriceContainer>
@@ -174,7 +180,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { clearDetails, fetchOrganizer, addToFavorite, removeFavorite },
+    { clearDetails, fetchOrganizer, addToFavorite, removeFavorite, buyTicket },
     dispatch
   );
 

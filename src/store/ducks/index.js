@@ -6,6 +6,7 @@ import auth from './auth';
 import event from './event';
 import favorite from './favorite';
 import ticket from './ticket';
+import category from './category';
 
 const authPersistConfig = {
   key: 'auth',
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   event,
   favorite,
   ticket,
+  categories: category,
 });
 
 export default rootReducer;

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native';
 
 import { loadEvents, loadFeaturedEvents } from '../../store/ducks/event';
+import { loadCategories } from '../../store/ducks/category';
 import { normalizeEvent } from '../../utils';
 
 import Logo from '../../components/Logo';
@@ -17,9 +18,10 @@ import { Container, HeaderContainer, FeaturedList, EventList } from './styles';
 
 class Home extends Component {
   componentDidMount() {
-    const { loadEvents, loadFeaturedEvents } = this.props;
+    const { loadEvents, loadFeaturedEvents, loadCategories } = this.props;
     loadEvents();
     loadFeaturedEvents();
+    loadCategories();
   }
 
   navigateToSearch = () => {
@@ -76,7 +78,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loadEvents, loadFeaturedEvents }, dispatch);
+  bindActionCreators(
+    { loadEvents, loadFeaturedEvents, loadCategories },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

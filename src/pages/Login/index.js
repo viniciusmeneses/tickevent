@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Keyboard } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -40,6 +41,7 @@ class Login extends Component {
     const { login } = this.props;
 
     if (email && password) {
+      Keyboard.dismiss();
       login(email, password);
     }
   };

@@ -1,9 +1,11 @@
 import { all, takeLatest, call, select, put } from 'redux-saga/effects';
+import { reject } from 'ramda';
 
 import {
   Types,
   loadEventsSuccess,
   loadFeaturedEventsSuccess,
+  searchEventsSuccess,
 } from '../../store/ducks/event';
 import { getToken } from './selectors';
 
@@ -48,7 +50,32 @@ function* loadFeaturedEventsSaga() {
   }
 }
 
+function* searchEventsSaga({ payload }) {
+  try {
+    const userToken = yield select(getToken);
+    const searchParams = {
+      name_like: payload.name,
+      categoryId: payload.categoryId,
+    };
+
+    const { data } = yield call(
+      apiService.get,
+      '/events',
+      configWithAuth(userToken, {
+        params: reject(searchParam => !searchParam)(searchParams),
+      })
+    );
+    if (!data.length) {
+      toastService.show('Nenhum evento encontrado');
+    }
+    yield put(searchEventsSuccess(data));
+  } catch (e) {
+    toastService.show('Não foi possível encontrar os eventos');
+  }
+}
+
 export default all([
   takeLatest(Types.LOAD, loadEventsSaga),
   takeLatest(Types.LOAD_FEATURED, loadFeaturedEventsSaga),
+  takeLatest(Types.SEARCH, searchEventsSaga),
 ]);

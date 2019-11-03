@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Keyboard } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -35,6 +36,7 @@ class Register extends Component {
     const { register } = this.props;
 
     if (name && cpf.length === 11 && email && password) {
+      Keyboard.dismiss();
       register(name, cpf, email, password);
     }
   };

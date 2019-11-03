@@ -5404,6 +5404,11 @@ query-string@^6.4.2:
     split-on-first "^1.0.0"
     strict-uri-encode "^2.0.0"
 
+ramda@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -5543,6 +5548,13 @@ react-navigation-animated-switch@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/react-navigation-animated-switch/-/react-navigation-animated-switch-0.3.2.tgz#9867ddf50ebe97702be25d19813ef5deeae68932"
   integrity sha512-WVkTbxvNkH/D6Rx89aEQXQ65Tkm2hWLiiP9RekNk1Uyhe/s53Xe0tvblAk1nq7tk9+n4ilfbADU5wPUkNPiK1Q==
+
+react-navigation-props-mapper@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-props-mapper/-/react-navigation-props-mapper-1.0.1.tgz#f2c619911ab45c927d57fb07a57d94c93570d355"
+  integrity sha512-Za76r2YU2FIDJBU5itGYW9tsHd0SXQlvO5GGu2XJldi8ng/qEoTA3J7hm1aaPMMbrcg08hiOYHljWofw6iQiIA==
+  dependencies:
+    hoist-non-react-statics "^3.3.0"
 
 react-navigation-stack@^1.10.3:
   version "1.10.3"

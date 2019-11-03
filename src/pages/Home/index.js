@@ -1,25 +1,57 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
+
+import { loadEvents, loadFeaturedEvents } from '../../store/ducks/event';
 
 import Logo from '../../components/Logo';
 import FeaturedCard from '../../components/FeaturedCard';
 import Card from '../../components/Card';
 import Separator from '../../components/Separator';
 import ListTitle from '../../components/ListTitle';
-import { Container, HeaderContainer, FeaturedList, EventList } from './styles';
+import {
+  Container,
+  HeaderContainer,
+  FeaturedList,
+  EventList,
+  Loading,
+  LoadingContainer,
+  LoadingFeaturedContainer,
+} from './styles';
+import { normalizeEvent } from '../../utils';
 
 class Home extends Component {
+  componentDidMount() {
+    const { loadEvents, loadFeaturedEvents } = this.props;
+    loadEvents();
+    loadFeaturedEvents();
+  }
+
   navigateToSearch = () => {
     const { navigation } = this.props;
     navigation.navigate('Search');
   };
 
+  renderLoading = isLoading => {
+    if (!isLoading) {
+      return null;
+    }
+    return (
+      <LoadingContainer>
+        <Loading />
+      </LoadingContainer>
+    );
+  };
+
   render() {
+    const { isLoading, isLoadingFeatured, list, featuredList } = this.props;
+
     return (
       <EventList
-        data={[1, 2, 3]}
-        keyExtractor={i => i.toString()}
+        data={list}
+        keyExtractor={item => item.id.toString()}
         ListHeaderComponent={
           <Container>
             <HeaderContainer>
@@ -31,44 +63,33 @@ class Home extends Component {
             <Separator marginRight={true} />
             <ListTitle>Destaques</ListTitle>
             <FeaturedList
-              data={[1, 2]}
-              keyExtractor={i => i.toString()}
-              renderItem={() => (
-                <FeaturedCard
-                  event={{
-                    id: 1,
-                    imageUrl:
-                      'https://res.cloudinary.com/practicaldev/image/fetch/s--ZmPcIbAW--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dzone.com/storage/temp/12334613-971.jpg',
-                    name: 'Treinamento UI e UX',
-                    startDate: '23/06/2001',
-                    startTime: '15:30',
-                    city: 'Campinas',
-                    state: 'SP',
-                  }}
-                />
-              )}
+              data={featuredList}
+              keyExtractor={item => item.id.toString()}
+              ListEmptyComponent={this.renderLoading(isLoadingFeatured)}
+              renderItem={({ item }) => <FeaturedCard event={item} />}
             />
             <Separator marginRight={true} />
             <ListTitle>Próximos Eventos</ListTitle>
+            {this.renderLoading(isLoading)}
           </Container>
         }
-        renderItem={() => (
-          <Card
-            event={{
-              imageUrl:
-                'https://res.cloudinary.com/practicaldev/image/fetch/s--ZmPcIbAW--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dzone.com/storage/temp/12334613-971.jpg',
-              name: 'Treinamento UI e UX',
-              startDate: '23/06/2001',
-              startTime: '15:30',
-              city: 'Campinas',
-              state: 'SP',
-              ticketPrice: 'R$ 59,99',
-            }}
-          />
-        )}
+        renderItem={({ item }) => <Card event={item} />}
       />
     );
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  list: state.event.list.map(normalizeEvent),
+  featuredList: state.event.featuredList.map(normalizeEvent),
+  isLoading: state.event.isLoading,
+  isLoadingFeatured: state.event.isLoadingFeatured,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ loadEvents, loadFeaturedEvents }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

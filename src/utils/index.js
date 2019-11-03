@@ -1,5 +1,10 @@
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import numbro from 'numbro';
+import numbroLang from 'numbro/languages/pt-BR';
+
+numbro.registerLanguage(numbroLang, true);
+
 moment.locale('pt-br');
 
 export const parseDate = date => moment(date);
@@ -8,11 +13,7 @@ export const formatDate = date => moment(date).format('L');
 
 export const formatTime = datetime => `${moment(datetime).format('HH:mm')}H`;
 
-const moneyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-});
-export const formatMoney = value => moneyFormatter.format(value);
+export const formatMoney = value => numbro(value).formatCurrency();
 
 export const normalizeEvent = event => {
   const parsedStartDate = parseDate(event.startDate);

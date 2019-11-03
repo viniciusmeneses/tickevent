@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native';
 
 import { loadEvents, loadFeaturedEvents } from '../../store/ducks/event';
 import { loadCategories } from '../../store/ducks/category';
+import { logout } from '../../store/ducks/auth';
 import { normalizeEvent } from '../../utils';
 
 import Logo from '../../components/Logo';
@@ -14,7 +14,14 @@ import Card from '../../components/Card';
 import Separator from '../../components/Separator';
 import ListTitle from '../../components/ListTitle';
 import Loading from '../../components/Loading';
-import { Container, HeaderContainer, FeaturedList, EventList } from './styles';
+import {
+  Container,
+  HeaderContainer,
+  FeaturedList,
+  EventList,
+  LogoutButton,
+  SearchButton,
+} from './styles';
 
 class Home extends Component {
   componentDidMount() {
@@ -27,6 +34,12 @@ class Home extends Component {
   navigateToSearch = () => {
     const { navigation } = this.props;
     navigation.navigate('Search');
+  };
+
+  navigateToLogin = () => {
+    const { navigation, logout } = this.props;
+    logout();
+    navigation.navigate('Login');
   };
 
   renderLoading = isLoading => {
@@ -47,9 +60,12 @@ class Home extends Component {
           <Container>
             <HeaderContainer>
               <Logo horizontal={true} />
-              <TouchableOpacity onPress={this.navigateToSearch}>
-                <Icon name="search" color="#ff5757" size={30} />
-              </TouchableOpacity>
+              <SearchButton onPress={this.navigateToSearch}>
+                <Icon name="search" color="#ff5757" size={28} />
+              </SearchButton>
+              <LogoutButton onPress={this.navigateToLogin}>
+                <Icon name="sign-out" color="#ff5757" size={32} />
+              </LogoutButton>
             </HeaderContainer>
             <Separator marginRight={true} />
             <ListTitle>Destaques</ListTitle>
@@ -79,7 +95,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { loadEvents, loadFeaturedEvents, loadCategories },
+    { loadEvents, loadFeaturedEvents, loadCategories, logout },
     dispatch
   );
 

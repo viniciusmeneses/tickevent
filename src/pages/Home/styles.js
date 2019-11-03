@@ -9,7 +9,6 @@ export const Container = styled.View`
 
 export const HeaderContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   padding-right: 20px;
   padding: 15px 20px 0 0;
@@ -27,4 +26,11 @@ export const FeaturedList = styled.FlatList.attrs({
 
 export const EventList = styled.FlatList`
   background-color: #fbfbfb;
+`;
+
+export const LogoutButton = styled.TouchableOpacity``;
+
+export const SearchButton = styled.TouchableOpacity`
+  margin-left: auto;
+  margin-right: 15px;
 `;

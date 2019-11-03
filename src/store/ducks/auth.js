@@ -5,6 +5,7 @@ export const Types = {
   AUTH_ERROR: 'auth/AUTH_ERROR',
   LOAD_USER_DATA: 'auth/LOAD_USER_DATA',
   LOAD_USER_DATA_SUCCESS: 'auth/LOAD_USER_DATA_SUCCESS',
+  LOGOUT: 'auth/LOGOUT',
 };
 
 export const login = (email, password) => ({
@@ -50,6 +51,10 @@ export const loadUserDataSuccess = user => ({
   },
 });
 
+export const logout = () => ({
+  type: Types.LOGOUT,
+});
+
 const initialState = {
   token: null,
   user: {},
@@ -74,6 +79,8 @@ export default function reducer(state = initialState, action) {
         isLogging: false,
         isRegistering: false,
       };
+    case Types.LOGOUT:
+      return initialState;
     default:
       return state;
   }

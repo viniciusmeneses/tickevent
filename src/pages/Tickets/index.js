@@ -1,36 +1,60 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { loadTickets } from '../../store/ducks/ticket';
+import { normalizeEvent, normalizeTicket } from '../../utils';
 
 import TicketCard from '../../components/TicketCard';
 import ListTitle from '../../components/ListTitle';
-import { Container, EventList } from './styles';
+import Loading from '../../components/Loading';
+import { Container, TicketList } from './styles';
 
 class Tickets extends Component {
+  componentDidMount() {
+    const { loadTickets } = this.props;
+    loadTickets();
+  }
+
+  renderLoading = isLoading => {
+    if (!isLoading) {
+      return null;
+    }
+    return <Loading />;
+  };
+
   render() {
+    const { list, isLoading } = this.props;
     return (
-      <EventList
-        data={[1, 2, 3]}
-        keyExtractor={i => i.toString()}
+      <TicketList
+        data={list}
+        keyExtractor={item => item.id.toString()}
         ListHeaderComponent={
           <Container>
             <ListTitle>Meus Ingressos</ListTitle>
+            {this.renderLoading(isLoading)}
           </Container>
         }
-        renderItem={() => (
-          <TicketCard
-            event={{
-              imageUrl:
-                'https://res.cloudinary.com/practicaldev/image/fetch/s--ZmPcIbAW--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dzone.com/storage/temp/12334613-971.jpg',
-              name: 'Treinamento UI e UX',
-              startDate: '23/06/2001',
-              startTime: '15:30',
-              city: 'Campinas',
-              state: 'SP',
-            }}
-          />
+        renderItem={({ item: { event, ...ticket } }) => (
+          <TicketCard ticket={ticket} event={event} />
         )}
       />
     );
   }
 }
 
-export default Tickets;
+const mapStateToProps = state => ({
+  list: state.ticket.list.map(ticket => ({
+    ...normalizeTicket(ticket),
+    event: normalizeEvent(ticket.event),
+  })),
+  isLoading: state.ticket.isLoading,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ loadTickets }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tickets);

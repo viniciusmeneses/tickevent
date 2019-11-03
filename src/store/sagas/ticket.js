@@ -1,29 +1,29 @@
 import { all, takeLatest, call, select, put } from 'redux-saga/effects';
 
-import { Types, loadFavoritesSuccess } from '../../store/ducks/favorite';
+import { Types, loadTicketsSuccess } from '../../store/ducks/ticket';
 import { getToken, getUser } from './selectors';
 
 import toastService from '../../services/toast';
 import apiService, { configWithAuth } from '../../services/api';
 
-function* loadFavoritesSaga() {
+function* loadTicketsSaga() {
   try {
     const user = yield select(getUser);
     const userToken = yield select(getToken);
 
     const { data } = yield call(
       apiService.get,
-      `/users/${user.id}/favorites`,
+      `/users/${user.id}/tickets`,
       configWithAuth(userToken, {
         params: {
           _expand: 'event',
         },
       })
     );
-    yield put(loadFavoritesSuccess(data));
+    yield put(loadTicketsSuccess(data));
   } catch (e) {
-    toastService.show('Não foi possível obter os seus eventos favoritos');
+    toastService.show('Não foi possível obter os seus ingressos comprados');
   }
 }
 
-export default all([takeLatest(Types.LOAD, loadFavoritesSaga)]);
+export default all([takeLatest(Types.LOAD, loadTicketsSaga)]);

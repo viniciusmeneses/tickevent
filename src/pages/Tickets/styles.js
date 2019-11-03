@@ -6,6 +6,6 @@ export const Container = styled.View`
   padding: 12px 15px 7px 15px;
 `;
 
-export const EventList = styled.FlatList`
+export const TicketList = styled.FlatList`
   background-color: #fbfbfb;
 `;

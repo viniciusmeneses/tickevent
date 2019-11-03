@@ -10,28 +10,24 @@ import {
 } from './styles';
 import { TouchableOpacity } from 'react-native';
 
-function FeaturedCard({
-  navigation,
-  event: { id, imageUrl, name, startDate, startTime, city, state },
-}) {
-  const navigateToEvent = () =>
-    navigation.navigate('EventDetails', { eventId: id });
+function FeaturedCard({ navigation, event }) {
+  const navigateToEvent = () => navigation.navigate('EventDetails', { event });
 
   return (
     <Container>
       <TouchableOpacity onPress={navigateToEvent}>
         <BackgroundImage
           source={{
-            uri: imageUrl,
+            uri: event.imageUrl,
           }}
         >
           <TextContainer>
-            <EventName numberOfLines={2}>{name}</EventName>
+            <EventName numberOfLines={2}>{event.name}</EventName>
             <EventDetails>
-              {startDate} - {startTime}
+              {event.startDateFormatted} - {event.startTimeFormatted}
             </EventDetails>
             <EventDetails>
-              {city} / {state}
+              {event.location.city} / {event.location.state}
             </EventDetails>
           </TextContainer>
         </BackgroundImage>

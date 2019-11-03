@@ -15,41 +15,36 @@ import {
 } from './styles';
 import { TouchableOpacity } from 'react-native';
 
-function Card({
-  navigation,
-  event: { id, imageUrl, name, startDate, startTime, city, state, ticketPrice },
-}) {
-  const navigateToEvent = () =>
-    navigation.navigate('EventDetails', { eventId: id });
-
+function Card({ navigation, event }) {
+  const navigateToEvent = () => navigation.navigate('EventDetails', { event });
   return (
     <Container>
       <TouchableOpacity onPress={navigateToEvent}>
         <Image
           source={{
-            uri: imageUrl,
+            uri: event.imageUrl,
           }}
         />
         <TextContainer>
-          <EventName numberOfLines={1}>{name}</EventName>
+          <EventName numberOfLines={1}>{event.name}</EventName>
 
           <EventContainer>
             <EventDetailsContainer>
               <EventDetailsIconContainer>
                 <Icon name="calendar-alt" color="#ff5757" size={14} />
                 <EventDetails>
-                  {startDate} - {startTime}
+                  {event.startDateFormatted} - {event.startTimeFormatted}
                 </EventDetails>
               </EventDetailsIconContainer>
 
               <EventDetailsIconContainer>
                 <Icon name="map-marker-alt" color="#ff5757" size={14} />
                 <EventDetails>
-                  {city} / {state}
+                  {event.location.city} / {event.location.state}
                 </EventDetails>
               </EventDetailsIconContainer>
             </EventDetailsContainer>
-            <EventTicketPrice>{ticketPrice}</EventTicketPrice>
+            <EventTicketPrice>{event.ticketPriceFormatted}</EventTicketPrice>
           </EventContainer>
         </TextContainer>
       </TouchableOpacity>

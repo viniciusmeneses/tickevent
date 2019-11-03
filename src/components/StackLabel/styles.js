@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const Label = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 0.5px;
   color: #fff;
   text-transform: uppercase;

@@ -26,19 +26,22 @@ class Tickets extends Component {
   render() {
     const { list, isLoading } = this.props;
     return (
-      <TicketList
-        data={list}
-        keyExtractor={item => item.id.toString()}
-        ListHeaderComponent={
-          <Container>
-            <ListTitle>Meus Ingressos</ListTitle>
-            {this.renderLoading(isLoading)}
-          </Container>
-        }
-        renderItem={({ item: { event, ...ticket } }) => (
-          <TicketCard ticket={ticket} event={event} />
+      <>
+        <Container>
+          <ListTitle>Meus Ingressos</ListTitle>
+        </Container>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <TicketList
+            data={list}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item: { event, ...ticket } }) => (
+              <TicketCard ticket={ticket} event={event} />
+            )}
+          />
         )}
-      />
+      </>
     );
   }
 }

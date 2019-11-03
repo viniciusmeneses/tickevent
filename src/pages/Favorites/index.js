@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -10,35 +10,23 @@ import ListTitle from '../../components/ListTitle';
 import Loading from '../../components/Loading';
 import { Container, FavoriteList } from './styles';
 
-class Favorites extends Component {
-  componentDidMount() {
-    const { loadFavorites } = this.props;
-    loadFavorites();
-  }
-
-  renderLoading = isLoading => {
-    if (!isLoading) {
-      return null;
-    }
-    return <Loading />;
-  };
-
-  render() {
-    const { list, isLoading } = this.props;
-    return (
-      <FavoriteList
-        data={list}
-        keyExtractor={item => item.id.toString()}
-        ListHeaderComponent={
-          <Container>
-            <ListTitle>Meus Favoritos</ListTitle>
-            {this.renderLoading(isLoading)}
-          </Container>
-        }
-        renderItem={({ item }) => <Card event={item.event} />}
-      />
-    );
-  }
+function Favorites({ list, isLoading }) {
+  return (
+    <>
+      <Container>
+        <ListTitle>Meus Favoritos</ListTitle>
+      </Container>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FavoriteList
+          data={list}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => <Card event={item.event} />}
+        />
+      )}
+    </>
+  );
 }
 
 const mapStateToProps = state => ({

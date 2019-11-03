@@ -20,6 +20,11 @@ export const FavoriteButton = styled.TouchableOpacity`
   position: absolute;
   top: 10;
   right: 10;
+  background-color: #fff;
+  padding: 6px;
+  padding-top: 7px;
+  border-radius: 100px;
+  border: 1px solid #ff5757;
 `;
 
 export const EventName = styled.Text`

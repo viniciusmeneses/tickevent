@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { loadEvents, loadFeaturedEvents } from '../../store/ducks/event';
 import { loadCategories } from '../../store/ducks/category';
+import { loadFavorites } from '../../store/ducks/favorite';
 import { logout } from '../../store/ducks/auth';
 import { normalizeEvent } from '../../utils';
 
@@ -25,10 +26,16 @@ import {
 
 class Home extends Component {
   componentDidMount() {
-    const { loadEvents, loadFeaturedEvents, loadCategories } = this.props;
+    const {
+      loadEvents,
+      loadFeaturedEvents,
+      loadCategories,
+      loadFavorites,
+    } = this.props;
     loadEvents();
     loadFeaturedEvents();
     loadCategories();
+    loadFavorites();
   }
 
   navigateToSearch = () => {
@@ -95,7 +102,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { loadEvents, loadFeaturedEvents, loadCategories, logout },
+    { loadEvents, loadFeaturedEvents, loadCategories, logout, loadFavorites },
     dispatch
   );
 

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { clearDetails, fetchOrganizer } from '../../store/ducks/detail';
+import { addToFavorite, removeFavorite } from '../../store/ducks/favorite';
 
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import IconFa5 from 'react-native-vector-icons/FontAwesome5';
@@ -44,14 +45,14 @@ class Details extends Component {
     clearDetails();
   }
 
-  getCategoryName = () => {
+  getCategory = () => {
     const { categories, event } = this.props;
-    const foundCategory = categories.find(
-      category => category.id === event.categoryId
-    );
-    if (foundCategory) {
-      return foundCategory.name;
-    }
+    return categories.find(category => category.id === event.categoryId);
+  };
+
+  getFavorite = () => {
+    const { favorites, event } = this.props;
+    return favorites.find(favorite => favorite.eventId === event.id);
   };
 
   isTicket = () => {
@@ -59,9 +60,19 @@ class Details extends Component {
     return type === 'Ticket';
   };
 
+  handleFavorite = favorite => {
+    const { addToFavorite, removeFavorite, event } = this.props;
+    if (favorite) {
+      removeFavorite(favorite.id);
+    } else {
+      addToFavorite(event);
+    }
+  };
+
   render() {
     const { event, ticket, organizer, isLoading } = this.props;
-
+    const category = this.getCategory();
+    const favorite = this.getFavorite();
     if (isLoading) {
       return <Loading />;
     }
@@ -74,8 +85,12 @@ class Details extends Component {
               uri: event.imageUrl,
             }}
           >
-            <FavoriteButton>
-              <IconFa name="heart-o" color="#fff" size={32} />
+            <FavoriteButton onPress={() => this.handleFavorite(favorite)}>
+              <IconFa
+                name={favorite ? 'heart' : 'heart-o'}
+                color="#FF5757"
+                size={22}
+              />
             </FavoriteButton>
           </EventBackgroundImage>
         )}
@@ -100,7 +115,7 @@ class Details extends Component {
         <EventDetailContainer>
           <IconFa name="tag" color="#FF5757" size={24} />
           <EventDetailType marginLeft={12}>Categoria: </EventDetailType>
-          <EventDetailText>{this.getCategoryName()}</EventDetailText>
+          <EventDetailText>{category && category.name}</EventDetailText>
         </EventDetailContainer>
         <Separator />
         {this.isTicket() ? (
@@ -154,10 +169,14 @@ const mapStateToProps = state => ({
   organizer: state.details.organizer,
   isLoading: state.details.isLoading,
   categories: state.categories,
+  favorites: state.favorite.list,
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ clearDetails, fetchOrganizer }, dispatch);
+  bindActionCreators(
+    { clearDetails, fetchOrganizer, addToFavorite, removeFavorite },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

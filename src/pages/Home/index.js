@@ -2,25 +2,18 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { loadEvents, loadFeaturedEvents } from '../../store/ducks/event';
+import { normalizeEvent } from '../../utils';
 
 import Logo from '../../components/Logo';
 import FeaturedCard from '../../components/FeaturedCard';
 import Card from '../../components/Card';
 import Separator from '../../components/Separator';
 import ListTitle from '../../components/ListTitle';
-import {
-  Container,
-  HeaderContainer,
-  FeaturedList,
-  EventList,
-  Loading,
-  LoadingContainer,
-  LoadingFeaturedContainer,
-} from './styles';
-import { normalizeEvent } from '../../utils';
+import Loading from '../../components/Loading';
+import { Container, HeaderContainer, FeaturedList, EventList } from './styles';
 
 class Home extends Component {
   componentDidMount() {
@@ -38,11 +31,7 @@ class Home extends Component {
     if (!isLoading) {
       return null;
     }
-    return (
-      <LoadingContainer>
-        <Loading />
-      </LoadingContainer>
-    );
+    return <Loading />;
   };
 
   render() {

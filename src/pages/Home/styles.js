@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
@@ -29,15 +28,3 @@ export const FeaturedList = styled.FlatList.attrs({
 export const EventList = styled.FlatList`
   background-color: #fbfbfb;
 `;
-
-export const LoadingContainer = styled.View`
-  width: ${Dimensions.get('window').width - 30};
-  margin-top: 30px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const Loading = styled.ActivityIndicator.attrs({
-  color: '#ff5757',
-  size: 38,
-})``;

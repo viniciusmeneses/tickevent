@@ -11,7 +11,7 @@ import rootSaga from './sagas';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['auth', 'event'],
+  blacklist: ['auth', 'event', 'favorite'],
 };
 
 // Middlewares

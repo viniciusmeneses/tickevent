@@ -1,36 +1,58 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { loadFavorites } from '../../store/ducks/favorite';
+import { normalizeEvent } from '../../utils';
 
 import Card from '../../components/Card';
 import ListTitle from '../../components/ListTitle';
-import { Container, EventList } from './styles';
+import Loading from '../../components/Loading';
+import { Container, FavoriteList } from './styles';
 
 class Favorites extends Component {
+  componentDidMount() {
+    const { loadFavorites } = this.props;
+    loadFavorites();
+  }
+
+  renderLoading = isLoading => {
+    if (!isLoading) {
+      return null;
+    }
+    return <Loading />;
+  };
+
   render() {
+    const { list, isLoading } = this.props;
     return (
-      <EventList
-        data={[1, 2, 3]}
-        keyExtractor={i => i.toString()}
+      <FavoriteList
+        data={list}
+        keyExtractor={item => item.id.toString()}
         ListHeaderComponent={
           <Container>
             <ListTitle>Meus Favoritos</ListTitle>
+            {this.renderLoading(isLoading)}
           </Container>
         }
-        renderItem={() => (
-          <Card
-            event={{
-              imageUrl:
-                'https://res.cloudinary.com/practicaldev/image/fetch/s--ZmPcIbAW--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dzone.com/storage/temp/12334613-971.jpg',
-              name: 'Treinamento UI e UX',
-              startDate: '23/06/2001',
-              startTime: '15:30',
-              city: 'Campinas',
-              state: 'SP',
-            }}
-          />
-        )}
+        renderItem={({ item }) => <Card event={item.event} />}
       />
     );
   }
 }
 
-export default Favorites;
+const mapStateToProps = state => ({
+  list: state.favorite.list.map(favorite => ({
+    ...favorite,
+    event: normalizeEvent(favorite.event),
+  })),
+  isLoading: state.favorite.isLoading,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ loadFavorites }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Favorites);

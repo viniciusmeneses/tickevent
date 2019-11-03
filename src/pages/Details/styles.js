@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
 export const Container = styled.ScrollView`
   padding: 15px;
@@ -83,4 +84,12 @@ export const EventLocationContainer = styled.View`
 
 export const EventLocationTextContainer = styled.View`
   margin-left: 13px;
+`;
+
+export const MapContainer = styled.View`
+  width: ${Dimensions.get('window').width - 30};
+  height: 250px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  margin-top: 10px;
 `;

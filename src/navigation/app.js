@@ -6,14 +6,13 @@ import SearchPage from '../pages/Search';
 import DetailsPage from '../pages/Details';
 import TabsNavigator from './tabs';
 
-const stackOptions = screenName => ({
-  title: screenName,
+const stackOptions = {
   headerTintColor: '#fff',
   headerTitle: StackLabel,
   headerStyle: {
     backgroundColor: '#FF5757',
   },
-});
+};
 
 const AppNavigator = createStackNavigator(
   {
@@ -22,16 +21,16 @@ const AppNavigator = createStackNavigator(
     },
     Search: {
       screen: SearchPage,
-      navigationOptions: stackOptions('Buscar Eventos'),
+      navigationOptions: { ...stackOptions, title: 'Buscar Eventos' },
     },
     EventDetails: {
       screen: DetailsPage,
-      navigationOptions: stackOptions('Detalhes do Evento'),
+      navigationOptions: stackOptions,
       params: { type: 'Event' },
     },
     TicketDetails: {
       screen: DetailsPage,
-      navigationOptions: stackOptions('Detalhes do Ingresso'),
+      navigationOptions: stackOptions,
       params: { type: 'Ticket' },
     },
   },

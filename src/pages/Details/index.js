@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withMappedNavigationParams } from 'react-navigation-props-mapper';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { clearDetails, fetchOrganizer } from '../../store/ducks/detail';
+
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import IconFa5 from 'react-native-vector-icons/FontAwesome5';
 import IconMd from 'react-native-vector-icons/MaterialIcons';
 
 import Separator from '../../components/Separator';
+import Map from '../../components/Map';
+import Loading from '../../components/Loading';
 import {
   Container,
   EventName,
@@ -18,66 +26,140 @@ import {
   BuyTicketButtonText,
   EventLocationContainer,
   EventLocationTextContainer,
+  MapContainer,
 } from './styles';
 
-export default function Details() {
-  return (
-    <Container>
-      <EventBackgroundImage
-        source={{
-          uri:
-            'https://res.cloudinary.com/practicaldev/image/fetch/s--ZmPcIbAW--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dzone.com/storage/temp/12334613-971.jpg',
-        }}
-      >
-        <FavoriteButton>
-          <IconFa name="heart-o" color="#fff" size={32} />
-        </FavoriteButton>
-      </EventBackgroundImage>
-      <EventName>Treinamento UI e UX</EventName>
-      <EventDetailContainer>
-        <IconFa5 name="calendar-alt" color="#FF5757" size={24} />
-        <EventDetailType marginLeft={13}>Data: </EventDetailType>
-        <EventDetailText>27/07/2020 até 28/07/2020</EventDetailText>
-      </EventDetailContainer>
-      <EventDetailContainer>
-        <IconMd name="access-time" color="#FF5757" size={24} />
-        <EventDetailType marginLeft={10}>Horário: </EventDetailType>
-        <EventDetailText>10:00H</EventDetailText>
-      </EventDetailContainer>
-      <EventDetailContainer>
-        <IconMd name="people" color="#FF5757" size={24} />
-        <EventDetailType marginLeft={9}>Organizador: </EventDetailType>
-        <EventDetailText>Amazon.com, Inc.</EventDetailText>
-      </EventDetailContainer>
-      <EventDetailContainer>
-        <IconFa name="tag" color="#FF5757" size={24} />
-        <EventDetailType marginLeft={12}>Categoria: </EventDetailType>
-        <EventDetailText>Tecnologia</EventDetailText>
-      </EventDetailContainer>
-      <Separator />
-      <TicketPriceContainer>
-        <EventDetailContainer noMarginTop>
-          <IconFa name="ticket" color="#FF5757" size={24} />
-          <TicketPrice marginLeft={8}>R$ 29,99</TicketPrice>
+class Details extends Component {
+  static navigationOptions = ({ event }) => ({
+    title: event.name,
+  });
+
+  componentDidMount() {
+    const { fetchOrganizer, event } = this.props;
+    fetchOrganizer(event.organizerId);
+  }
+
+  componentWillUnmount() {
+    const { clearDetails } = this.props;
+    clearDetails();
+  }
+
+  getCategoryName = () => {
+    const { categories, event } = this.props;
+    const foundCategory = categories.find(
+      category => category.id === event.categoryId
+    );
+    if (foundCategory) {
+      return foundCategory.name;
+    }
+  };
+
+  isTicket = () => {
+    const { type } = this.props;
+    return type === 'Ticket';
+  };
+
+  render() {
+    const { event, ticket, organizer, isLoading } = this.props;
+
+    if (isLoading) {
+      return <Loading />;
+    }
+
+    return (
+      <Container>
+        {!this.isTicket() && (
+          <EventBackgroundImage
+            source={{
+              uri: event.imageUrl,
+            }}
+          >
+            <FavoriteButton>
+              <IconFa name="heart-o" color="#fff" size={32} />
+            </FavoriteButton>
+          </EventBackgroundImage>
+        )}
+        <EventName noMarginTop={this.isTicket()}>{event.name}</EventName>
+        <EventDetailContainer>
+          <IconFa5 name="calendar-alt" color="#FF5757" size={24} />
+          <EventDetailType marginLeft={13}>Data: </EventDetailType>
+          <EventDetailText>
+            {event.startDateFormatted} até {event.endDateFormatted}
+          </EventDetailText>
         </EventDetailContainer>
-        <BuyTicketButton>
-          <BuyTicketButtonText>Comprar Ingresso</BuyTicketButtonText>
-        </BuyTicketButton>
-      </TicketPriceContainer>
-      <Separator />
-      <EventLocationContainer>
-        <IconFa name="location-arrow" color="#FF5757" size={24} />
-        <EventLocationTextContainer>
-          <EventDetailType>Localizacão: </EventDetailType>
-          <EventDetailText numberOfLines={2}>
-            Av. Dr. Mário Vilas Boas Rodrigues, 387
-          </EventDetailText>
-          <EventDetailText numberOfLines={2}>
-            Santo Amaro, São Paulo - SP
-          </EventDetailText>
-          <EventDetailText>04757-020</EventDetailText>
-        </EventLocationTextContainer>
-      </EventLocationContainer>
-    </Container>
-  );
+        <EventDetailContainer>
+          <IconMd name="access-time" color="#FF5757" size={24} />
+          <EventDetailType marginLeft={10}>Horário: </EventDetailType>
+          <EventDetailText>{event.startTimeFormatted}</EventDetailText>
+        </EventDetailContainer>
+        <EventDetailContainer>
+          <IconMd name="people" color="#FF5757" size={24} />
+          <EventDetailType marginLeft={9}>Organizador: </EventDetailType>
+          <EventDetailText>{organizer.name}</EventDetailText>
+        </EventDetailContainer>
+        <EventDetailContainer>
+          <IconFa name="tag" color="#FF5757" size={24} />
+          <EventDetailType marginLeft={12}>Categoria: </EventDetailType>
+          <EventDetailText>{this.getCategoryName()}</EventDetailText>
+        </EventDetailContainer>
+        <Separator />
+        {this.isTicket() ? (
+          <EventDetailContainer noMarginTop>
+            <IconFa name="credit-card" color="#FF5757" size={22} />
+            <EventDetailType marginLeft={9}>Valor Pago: </EventDetailType>
+            <EventDetailText>{ticket.paidValueFormatted}</EventDetailText>
+          </EventDetailContainer>
+        ) : (
+          <TicketPriceContainer>
+            <EventDetailContainer noMarginTop>
+              <IconFa name="ticket" color="#FF5757" size={24} />
+              <TicketPrice marginLeft={8}>
+                {event.ticketPriceFormatted}
+              </TicketPrice>
+            </EventDetailContainer>
+            <BuyTicketButton>
+              <BuyTicketButtonText>Comprar Ingresso</BuyTicketButtonText>
+            </BuyTicketButton>
+          </TicketPriceContainer>
+        )}
+        <Separator />
+        <EventLocationContainer>
+          <IconFa name="location-arrow" color="#FF5757" size={24} />
+          <EventLocationTextContainer>
+            <EventDetailType>Localização: </EventDetailType>
+            <EventDetailText numberOfLines={2}>
+              {event.location.address}, {event.location.number} -{' '}
+              {event.location.complement}
+            </EventDetailText>
+            <EventDetailText numberOfLines={2}>
+              {event.location.district}, {event.location.city} -{' '}
+              {event.location.state}
+            </EventDetailText>
+            <EventDetailText>{event.location.zipcode}</EventDetailText>
+          </EventLocationTextContainer>
+        </EventLocationContainer>
+        <MapContainer>
+          <Map
+            latitude={event.location.latitude}
+            longitude={event.location.longitude}
+            eventName={event.name}
+          />
+        </MapContainer>
+      </Container>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  organizer: state.details.organizer,
+  isLoading: state.details.isLoading,
+  categories: state.categories,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ clearDetails, fetchOrganizer }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withMappedNavigationParams()(Details));

@@ -9,13 +9,15 @@ import ticket from './ticket';
 import categories from './category';
 import details from './detail';
 
+import { Types } from './auth';
+
 const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   whitelist: ['token'],
 };
 
-const rootReducer = combineReducers({
+const allReducers = combineReducers({
   auth: persistReducer(authPersistConfig, auth),
   event,
   favorite,
@@ -23,5 +25,12 @@ const rootReducer = combineReducers({
   categories,
   details,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === Types.LOGOUT) {
+    state = undefined;
+  }
+  return allReducers(state, action);
+};
 
 export default rootReducer;

@@ -42,6 +42,7 @@ class Register extends Component {
   };
 
   render() {
+    const { isRegistering } = this.props;
     const { email, password, name, cpf } = this.state;
     return (
       <ScrollContainer>
@@ -91,7 +92,11 @@ class Register extends Component {
               {...this.registerInputProps}
             />
 
-            <SubmitButton text="Cadastrar" onPress={this.handleRegister} />
+            <SubmitButton
+              text="Cadastrar"
+              onPress={this.handleRegister}
+              loading={isRegistering}
+            />
           </FormContainer>
         </Container>
       </ScrollContainer>

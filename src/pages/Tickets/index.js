@@ -35,6 +35,7 @@ class Tickets extends Component {
         ) : (
           <TicketList
             data={list}
+            key={list.length}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item: { event, ...ticket } }) => (
               <TicketCard ticket={ticket} event={event} />

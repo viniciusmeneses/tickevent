@@ -149,8 +149,10 @@ class Details extends Component {
           <EventLocationTextContainer>
             <EventDetailType>Localização: </EventDetailType>
             <EventDetailText numberOfLines={2}>
-              {event.location.address}, {event.location.number} -{' '}
-              {event.location.complement}
+              {event.location.address}, {event.location.number}
+              {event.location.complement
+                ? ` - ${event.location.complement}`
+                : null}
             </EventDetailText>
             <EventDetailText numberOfLines={2}>
               {event.location.district}, {event.location.city} -{' '}

@@ -77,6 +77,7 @@ class Search extends Component {
         {list.length ? (
           <EventList
             data={list}
+            key={list.length}
             keyExtractor={item => item.id.toString()}
             ListHeaderComponent={
               <EventListHeaderContainer>

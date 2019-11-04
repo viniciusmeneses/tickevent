@@ -30,7 +30,7 @@ function TicketCard({ navigation, ticket, event }) {
               <EventName numberOfLines={2}>{event.name}</EventName>
             </EventNameContainer>
             <EventDetails>
-              {event.startDateFormatted} - {event.startTime}
+              {event.startDateFormatted} - {event.startTimeFormatted}
             </EventDetails>
             <EventDetails>
               {event.location.city} / {event.location.state}

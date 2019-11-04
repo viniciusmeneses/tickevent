@@ -21,6 +21,7 @@ function Favorites({ list, isLoading }) {
       ) : (
         <FavoriteList
           data={list}
+          key={list.length}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => <Card event={item.event} />}
         />
